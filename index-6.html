@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7faff">
+<title>نبرد ذهن‌ها | شطرنج</title>
+<style>
+:root{--bg:#f7faff;--white:#fff;--ice:#eaf4ff;--tile:#dce6f0;--ink:#263445;--muted:#7d8b9b;--accent:#8cbfef;--line:rgba(255,255,255,.85);--shadow:0 24px 70px rgba(68,94,124,.14);--radius:26px}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Tahoma,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(ellipse at 15% 5%,#e4f2ff 0,transparent 38%),radial-gradient(ellipse at 85% 80%,#edf5ff 0,transparent 36%),var(--bg)}
+button,select{font:inherit}button{cursor:pointer;border:0;transition:transform .16s,box-shadow .16s,background .16s}button:active{transform:scale(.98)}button:focus-visible,select:focus-visible{outline:3px solid #8cbfef;outline-offset:3px}
+.app{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:24px 16px calc(24px + env(safe-area-inset-bottom))}
+.glass{background:rgba(255,255,255,.67);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:var(--radius)}
+.screen{width:min(100%,720px);animation:appear .32s ease both}.hidden{display:none!important}
+@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}@keyframes pop{0%{transform:scale(.94);opacity:.5}100%{transform:scale(1);opacity:1}}
+.menu-card{max-width:430px;margin:auto;padding:clamp(28px,7vw,48px) 28px;text-align:center}
+.king-mark{width:70px;height:70px;margin:0 auto 18px;border-radius:24px;background:linear-gradient(145deg,#fff,#e9f4ff);display:grid;place-items:center;font-size:42px;color:#647d98;box-shadow:inset 0 1px 0 #fff,0 12px 30px #c7d9ec66}
+h1{font-size:clamp(27px,6vw,38px);margin:0 0 8px;letter-spacing:-1px} .subtitle{color:var(--muted);font-size:14px;margin:0 0 30px}
+.primary,.secondary,.quiet{border-radius:15px;padding:14px 18px;font-weight:700}.primary{background:linear-gradient(135deg,#c4e2ff,#8cbfef);color:#183b5c;box-shadow:0 10px 24px #8cbfef44}.primary:hover{box-shadow:0 13px 28px #8cbfef66}.secondary{background:#fff9;color:var(--ink);border:1px solid #dce8f4}.quiet{background:transparent;color:var(--muted);padding:10px 14px;font-size:13px}
+.menu-actions{display:grid;gap:10px}.creator{font-size:12px;color:var(--muted);margin-top:28px}
+.settings{padding:26px;max-width:440px;margin:auto}.settings h2{margin:0 0 22px;font-size:22px}.field{display:grid;gap:8px;margin-bottom:18px;text-align:right}.field label{font-size:13px;color:var(--muted)}select{width:100%;padding:13px 14px;border:1px solid #dce6f0;background:#ffffffb8;border-radius:13px;color:var(--ink)}
+.switch-row{display:flex;align-items:center;justify-content:space-between;margin:14px 0 22px;font-size:14px}.switch-row input{width:20px;height:20px;accent-color:#8cbfef}
+.game-screen{width:min(100%,600px)}.game-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.brand-small{font-size:17px;font-weight:800}.pill{font-size:12px;color:#61758b;background:#ffffffa8;border:1px solid #fff;padding:8px 11px;border-radius:99px;white-space:nowrap}
+.playerbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 15px;margin:9px 0;border-radius:17px;background:#ffffff80;border:1px solid #ffffffb8}.player{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700}.avatar{width:32px;height:32px;display:grid;place-items:center;border-radius:11px;background:#eaf4ff;font-size:21px}.status{font-size:12px;color:var(--muted)}.active-turn{box-shadow:0 0 0 2px #a8d2f8 inset;background:#fff}
+.board-wrap{padding:clamp(7px,2vw,12px);border-radius:22px;background:rgba(255,255,255,.76);border:1px solid #fff;box-shadow:0 18px 45px #9bb4cc24}
+.board{width:100%;aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);overflow:hidden;border-radius:14px;touch-action:manipulation;user-select:none}
+.square{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;aspect-ratio:1;border:0;border-radius:0;padding:0;color:var(--ink);font-size:clamp(28px,7.8vw,53px);line-height:1}
+.light{background:#f4f8fc}.dark{background:#d8e5f1}.square.selected{background:#a9d3f5!important}.square.last{box-shadow:inset 0 0 0 100px #b5dafa66}.square.check{background:#f5b6b6!important}
+.piece{position:relative;z-index:2;filter:drop-shadow(0 2px 1px #71869a22);transition:transform .12s}.square.selected .piece{transform:scale(1.08)}
+.dot{position:absolute;width:22%;height:22%;border-radius:50%;background:#718ca966;z-index:1}.capture-dot{position:absolute;inset:5%;border:3px solid #718ca977;border-radius:50%;z-index:1}
+.coords{position:absolute;font-size:9px;opacity:.62;z-index:3;pointer-events:none}.coord-file{bottom:3px;left:4px}.coord-rank{top:3px;right:4px}
+.game-actions{display:flex;justify-content:flex-end;margin-top:8px}.small-btn{background:#ffffffa6;border:1px solid #fff;border-radius:12px;padding:10px 13px;color:#61758b;font-size:13px}
+.toast{min-height:20px;text-align:center;color:#6d8094;font-size:12px;margin:7px 0 1px}
+.overlay{position:fixed;inset:0;background:#26344535;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10;animation:fade .18s ease}
+.dialog{width:min(100%,370px);padding:25px;text-align:center;animation:pop .2s ease}.dialog h2{font-size:23px;margin:0 0 9px}.dialog p{color:var(--muted);font-size:13px;line-height:1.8;margin:0 0 20px}.dialog-actions{display:grid;gap:9px}
+.result-icon{font-size:46px;margin-bottom:10px}.promotion{display:flex;justify-content:center;gap:8px;margin:18px 0}.promotion button{width:55px;height:55px;font-size:36px;border-radius:13px;background:#edf5fc}
+.footer-note{text-align:center;font-size:11px;color:#9aa8b7;margin-top:14px}
+@media(min-width:650px){.game-screen{width:min(100%,570px)}.square{font-size:clamp(36px,5.5vw,58px)}}
+@media(max-width:380px){.app{padding:12px 8px}.playerbar{padding:9px 10px}.status{font-size:11px}.pill{font-size:11px}.game-top{margin-bottom:7px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="app">
+<section id="home" class="screen">
+ <div class="glass menu-card">
+  <div class="king-mark" aria-hidden="true">♔</div>
+  <h1>نبرد ذهن‌ها</h1><p class="subtitle">هر حرکت، یک تصمیم</p>
+  <div class="menu-actions"><button id="startBtn" class="primary">شروع بازی</button><button id="settingsBtn" class="secondary">تنظیمات</button></div>
+  <div class="creator">ساخته شده توسط آرش یوسفی</div>
+ </div>
+</section>
+<section id="settings" class="screen hidden">
+ <div class="glass settings">
+  <h2>تنظیمات</h2>
+  <div class="field"><label for="difficulty">سطح هوش مصنوعی</label><select id="difficulty"><option value="easy">آسان</option><option value="medium" selected>متوسط</option><option value="hard">سخت</option><option value="pro">حرفه‌ای</option></select></div>
+  <div class="field"><label for="colorChoice">رنگ مهره‌های شما</label><select id="colorChoice"><option value="w">سفید</option><option value="b">سیاه</option><option value="random">تصادفی</option></select></div>
+  <label class="switch-row">صدای حرکت مهره‌ها <input id="soundToggle" type="checkbox" checked></label>
+  <div class="menu-actions"><button id="saveSettings" class="primary">ذخیره تنظیمات</button><button id="settingsBack" class="quiet">بازگشت</button></div>
+ </div>
+</section>
+<section id="game" class="screen game-screen hidden">
+ <div class="game-top"><div class="brand-small">نبرد ذهن‌ها</div><span id="levelPill" class="pill">حریف · متوسط</span><button id="menuBtn" class="small-btn" aria-label="باز کردن منو">منو ☰</button></div>
+ <div id="opponentBar" class="playerbar"><div class="player"><span class="avatar" id="opponentAvatar">♚</span><span id="opponentName">هوش مصنوعی</span></div><span id="opponentStatus" class="status">آماده بازی</span></div>
+ <div class="board-wrap"><div id="board" class="board" role="grid" aria-label="صفحه شطرنج"></div></div>
+ <div id="youBar" class="playerbar"><div class="player"><span class="avatar" id="youAvatar">♔</span><span>شما</span></div><span id="youStatus" class="status">نوبت شما</span></div>
+ <div id="toast" class="toast" aria-live="polite">مهره‌ای را انتخاب کنید.</div>
+ <div class="game-actions"><button id="flipBtn" class="small-btn">چرخش صفحه ↻</button></div>
+ <div class="footer-note">هوش مصنوعی داخلی · بدون وابستگی خارجی</div>
+</section>
+<section id="result" class="screen hidden">
+ <div class="glass menu-card"><div id="resultIcon" class="result-icon">♔</div><h1 id="resultTitle">بازی به پایان رسید</h1><p id="resultMessage" class="subtitle">نتیجه مسابقه</p><div class="menu-actions"><button id="againBtn" class="primary">بازی دوباره</button><button id="resultHomeBtn" class="quiet">بازگشت به منو</button></div></div>
+</section>
+</main>
+<div id="overlay" class="overlay hidden" role="dialog" aria-modal="true">
+ <div id="dialog" class="glass dialog"></div>
+</div>
+<script>
+"use strict";
+/* Self-contained chess rules + alpha-beta AI. No network or external libraries. */
+const $=id=>document.getElementById(id);
+const screens=["home","settings","game","result"];
+const GLYPHS={wk:"♔",wq:"♕",wr:"♖",wb:"♗",wn:"♘",wp:"♙",bk:"♚",bq:"♛",br:"♜",bb:"♝",bn:"♞",bp:"♟"};
+const VALUES={p:100,n:320,b:335,r:500,q:900,k:20000};
+const DIRS={n:[[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]],b:[[-1,-1],[-1,1],[1,-1],[1,1]],r:[[-1,0],[1,0],[0,-1],[0,1]],q:[[-1,-1],[-1,1],[1,-1],[1,1],[-1,0],[1,0],[0,-1],[0,1]],k:[[-1,-1],[-1,1],[1,-1],[1,1],[-1,0],[1,0],[0,-1],[0,1]]};
+let board=[],turn="w",human="w",selected=null,legalForSelected=[],lastMove=null,history=[],positionCounts={},enPassant=null,castle={wk:true,wq:true,bk:true,bq:true},halfmove=0,fullmove=1,thinking=false,gameOver=false,flipped=false,settings={difficulty:"medium",color:"w",sound:true},audioCtx=null,searchToken=0;
+function showScreen(id){screens.forEach(s=>$(s).classList.toggle("hidden",s!==id));}
+function freshGame(){board=Array(64).fill(null);const back=["r","n","b","q","k","b","n","r"];for(let c=0;c<8;c++){board[c]={c:"b",t:back[c]};board[8+c]={c:"b",t:"p"};board[48+c]={c:"w",t:"p"};board[56+c]={c:"w",t:back[c]};}
+ turn="w";selected=null;legalForSelected=[];lastMove=null;history=[];positionCounts={};enPassant=null;castle={wk:true,wq:true,bk:true,bq:true};halfmove=0;fullmove=1;thinking=false;gameOver=false;searchToken++;positionCounts[positionKey()]=1;renderBoard();updateStatus();$("toast").textContent=human===turn?"مهره‌ای را انتخاب کنید.":"هوش مصنوعی در حال آماده شدن است.";showScreen("game");if(turn!==human)setTimeout(aiMove,250);}
+function sq(r,c){return r*8+c}function rc(i){return [Math.floor(i/8),i%8]}function inside(r,c){return r>=0&&r<8&&c>=0&&c<8}function colorAt(i){return board[i]?.c||null}
+function cloneState(){return {b:board.map(p=>p?{...p}:null),turn,castle:{...castle},ep:enPassant,halfmove,fullmove};}
+function restoreState(s){board=s.b.map(p=>p?{...p}:null);turn=s.turn;castle={...s.castle};enPassant=s.ep;halfmove=s.halfmove;fullmove=s.fullmove;}
+function isAttacked(b,pos,by){const [r,c]=rc(pos);const pawnDir=by==="w"?-1:1;for(const dc of [-1,1]){let rr=r-pawnDir,cc=c+dc;if(inside(rr,cc)){let p=b[sq(rr,cc)];if(p&&p.c===by&&p.t==="p")return true;}}
+ for(const [dr,dc] of DIRS.n){let rr=r+dr,cc=c+dc;if(inside(rr,cc)){let p=b[sq(rr,cc)];if(p&&p.c===by&&p.t==="n")return true;}}
+ for(const [dr,dc] of DIRS.k){let rr=r+dr,cc=c+dc;if(inside(rr,cc)){let p=b[sq(rr,cc)];if(p&&p.c===by&&p.t==="k")return true;}}
+ for(const type of ["b","r","q"]){for(const [dr,dc] of DIRS[type]){let rr=r+dr,cc=c+dc;while(inside(rr,cc)){let p=b[sq(rr,cc)];if(p){if(p.c===by&&(p.t===type||p.t==="q"))return true;break;}rr+=dr;cc+=dc;}}}return false;}
+function kingSquare(b,c){return b.findIndex(p=>p&&p.c===c&&p.t==="k")}
+function inCheck(c){let k=kingSquare(board,c);return k<0||isAttacked(board,k,c==="w"?"b":"w")}
+function pseudoMoves(b,c,includeCastle=true){let moves=[];for(let from=0;from<64;from++){let p=b[from];if(!p||p.c!==c)continue;let [r,col]=rc(from);
+ if(p.t==="p"){let d=c==="w"?-1:1,start=c==="w"?6:1,promo=c==="w"?0:7;let nr=r+d;if(inside(nr,col)&&!b[sq(nr,col)]){if(nr===promo){for(let pr of ["q","r","b","n"])moves.push({from,to:sq(nr,col),promotion:pr});}else{moves.push({from,to:sq(nr,col)});let nr2=r+2*d;if(r===start&&!b[sq(nr2,col)])moves.push({from,to:sq(nr2,col),double:true});}}
+ for(let dc of [-1,1]){let rr=r+d,cc=col+dc;if(!inside(rr,cc))continue;let to=sq(rr,cc),target=b[to];if(target&&target.c!==c&&target.t!=="k"){if(rr===promo){for(let pr of ["q","r","b","n"])moves.push({from,to,promotion:pr,capture:true});}else moves.push({from,to,capture:true});}else if(enPassant===to)moves.push({from,to,ep:true,capture:true});}
+ }else{let ds=p.t==="n"?DIRS.n:p.t==="b"?DIRS.b:p.t==="r"?DIRS.r:p.t==="q"?DIRS.q:DIRS.k;for(const [dr,dc] of ds){let rr=r+dr,cc=col+dc;while(inside(rr,cc)){let to=sq(rr,cc),target=b[to];if(!target)moves.push({from,to});else{if(target.c!==c&&target.t!=="k")moves.push({from,to,capture:true});break;}if(p.t==="n"||p.t==="k")break;rr+=dr;cc+=dc;}}}
+ }
+ if(includeCastle){let row=c==="w"?7:0,enemy=c==="w"?"b":"w",kfrom=sq(row,4);if(castle[c+"k"]&&b[kfrom]?.t==="k"&&b[kfrom]?.c===c&&!b[sq(row,5)]&&!b[sq(row,6)]&&!isAttacked(b,kfrom,enemy)&&!isAttacked(b,sq(row,5),enemy)&&!isAttacked(b,sq(row,6),enemy)&&b[sq(row,7)]?.t==="r"&&b[sq(row,7)]?.c===c)moves.push({from:kfrom,to:sq(row,6),castle:"k"});if(castle[c+"q"]&&b[kfrom]?.t==="k"&&b[kfrom]?.c===c&&!b[sq(row,1)]&&!b[sq(row,2)]&&!b[sq(row,3)]&&!isAttacked(b,kfrom,enemy)&&!isAttacked(b,sq(row,3),enemy)&&!isAttacked(b,sq(row,2),enemy)&&b[sq(row,0)]?.t==="r"&&b[sq(row,0)]?.c===c)moves.push({from:kfrom,to:sq(row,2),castle:"q"});}
+ return moves;}
+function applyMove(m){const p=board[m.from],captured=m.ep?board[m.to+(p.c==="w"?8:-8)]:board[m.to];board[m.to]=m.promotion?{c:p.c,t:m.promotion}:p;board[m.from]=null;if(m.ep)board[m.to+(p.c==="w"?8:-8)]=null;if(m.castle){let row=p.c==="w"?7:0;if(m.castle==="k"){board[sq(row,5)]=board[sq(row,7)];board[sq(row,7)]=null;}else{board[sq(row,3)]=board[sq(row,0)];board[sq(row,0)]=null;}}
+ if(p.t==="k"){castle[p.c+"k"]=false;castle[p.c+"q"]=false;}if(p.t==="r"){if(m.from===56)castle.wq=false;if(m.from===63)castle.wk=false;if(m.from===0)castle.bq=false;if(m.from===7)castle.bk=false;}if(captured?.t==="r"){if(m.to===56)castle.wq=false;if(m.to===63)castle.wk=false;if(m.to===0)castle.bq=false;if(m.to===7)castle.bk=false;}
+ enPassant=m.double?sq((rc(m.from)[0]+rc(m.to)[0])/2,rc(m.from)[1]):null;halfmove=(p.t==="p"||captured)?0:halfmove+1;if(turn==="b")fullmove++;turn=turn==="w"?"b":"w";return {captured,piece:p};}
+function legalMoves(c=turn){const all=pseudoMoves(board,c);let out=[];for(const m of all){const state=cloneState();const oldTurn=turn;turn=c;applyMove(m);if(!inCheck(c))out.push(m);restoreState(state);turn=oldTurn;}return out;}
+function moveToSAN(m,allLegal){const p=board[m.from],capture=!!(board[m.to]||m.ep);if(m.castle)return m.castle==="k"?"O-O":"O-O-O";let s=p.t==="p"?(capture?"abcdefgh"[rc(m.from)[1]+"".length?rc(m.from)[1]:rc(m.from)[1]]:""):p.t.toUpperCase();if(p.t!=="p"){let rivals=allLegal.filter(x=>x.from!==m.from&&x.to===m.to&&board[x.from]?.t===p.t);if(rivals.length){const sameFile=rivals.some(x=>rc(x.from)[1]===rc(m.from)[1]);const sameRank=rivals.some(x=>rc(x.from)[0]===rc(m.from)[0]);s+=!sameFile?"abcdefgh"[rc(m.from)[1]]:!sameRank?String(8-rc(m.from)[0]):"abcdefgh"[rc(m.from)[1]]+String(8-rc(m.from)[0]);}}if(capture)s+="x";s+="abcdefgh"[rc(m.to)[1]]+(8-rc(m.to)[0]);if(m.promotion)s+="="+m.promotion.toUpperCase();return s;}
+function positionKey(){let pieces=board.map((p,i)=>p?p.c+p.t+Math.floor(i/8)+i%8:"").filter(Boolean).join(",");return pieces+"|"+turn+"|"+Object.keys(castle).filter(k=>castle[k]).join("")+"|"+(enPassant??"-");}
+function insufficient(){let pieces=board.filter(Boolean);if(pieces.some(p=>p.t==="p"||p.t==="r"||p.t==="q"))return false;let minors=pieces.filter(p=>p.t==="b"||p.t==="n");if(minors.length<=1)return true;if(minors.every(p=>p.t==="b")){let colors=board.map((p,i)=>p&&p.t==="b"?((Math.floor(i/8)+i%8)%2):null).filter(x=>x!==null);return colors.every(x=>x===colors[0]);}return false;}
+function gameState(){const moves=legalMoves(turn);if(!moves.length)return inCheck(turn)?{over:true,type:"mate",winner:turn==="w"?"b":"w"}:{over:true,type:"draw",reason:"پات"};if(insufficient())return {over:true,type:"draw",reason:"کمبود مهره برای مات"};if(halfmove>=100)return {over:true,type:"draw",reason:"قانون پنجاه حرکت"};if((positionCounts[positionKey()]||0)>=3)return {over:true,type:"draw",reason:"تکرار سه‌باره موقعیت"};return {over:false,check:inCheck(turn)}}
+function renderBoard(){const el=$("board");el.innerHTML="";let moves=selected===null?[]:legalForSelected;for(let vr=0;vr<8;vr++)for(let vc=0;vc<8;vc++){let r=flipped?7-vr:vr,c=flipped?7-vc:vc,i=sq(r,c),p=board[i],btn=document.createElement("button");btn.type="button";btn.className="square "+((r+c)%2===0?"light":"dark");btn.setAttribute("role","gridcell");btn.setAttribute("aria-label",`${"abcdefgh"[c]}${8-r}${p? " "+(p.c==="w"?"سفید ":"سیاه ")+p.t:""}`);if(selected===i)btn.classList.add("selected");if(lastMove&&(lastMove.from===i||lastMove.to===i))btn.classList.add("last");if(p?.t==="k"&&p.c===turn&&inCheck(turn))btn.classList.add("check");if(p){let span=document.createElement("span");span.className="piece";span.textContent=GLYPHS[p.c+p.t];span.style.color=p.c==="w"?"#fff":"#33445a";span.style.webkitTextStroke=p.c==="w"?"1px #687b90":"1px #263445";span.style.textShadow=p.c==="w"?"0 1px 1px #526b85,0 0 2px #526b85":"0 1px 1px #ffffff88";btn.appendChild(span);}let target=moves.find(m=>m.to===i);if(target){let mark=document.createElement("span");mark.className=(p||target.ep)?"capture-dot":"dot";btn.appendChild(mark);}if(vc===0){let co=document.createElement("span");co.className="coords coord-rank";co.textContent=8-r;btn.appendChild(co);}if(vr===7){let co=document.createElement("span");co.className="coords coord-file";co.textContent="abcdefgh"[c];btn.appendChild(co);}btn.addEventListener("click",()=>onSquare(i));el.appendChild(btn);}}
+function updateStatus(){const st=gameState();$("youStatus").textContent=gameOver?"پایان مسابقه":thinking?"در حال فکر...":turn===human?"نوبت شما":st.check?"کیش!":"منتظر حرکت";$("opponentStatus").textContent=gameOver?"پایان مسابقه":thinking?"در حال تحلیل...":turn!==human?"نوبت هوش مصنوعی":st.check?"کیش!":"آماده";$("youBar").classList.toggle("active-turn",!gameOver&&!thinking&&turn===human);$("opponentBar").classList.toggle("active-turn",!gameOver&&(thinking||turn!==human));}
+function onSquare(i){if(gameOver||thinking||turn!==human||!$("overlay").classList.contains("hidden"))return;const p=board[i];if(selected!==null){let m=legalForSelected.find(m=>m.to===i);if(m){if(m.promotion){showPromotion(m);return;}commitMove(m);return;}}
+ if(p&&p.c===human){selected=i;legalForSelected=legalMoves(turn).filter(m=>m.from===i);renderBoard();}else{selected=null;legalForSelected=[];renderBoard();}}
+function showPromotion(m){const opts=[["q","♕"],["r","♖"],["b","♗"],["n","♘"]];$("dialog").innerHTML=`<h2>ارتقای پیاده</h2><p>مهره موردنظر را انتخاب کنید.</p><div class="promotion">${opts.map(([t,g])=>`<button data-p="${t}" aria-label="${t}">${g}</button>`).join("")}</div><button class="quiet" id="cancelPromo">لغو</button>`;$("overlay").classList.remove("hidden");$("dialog").querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{$("overlay").classList.add("hidden");commitMove({...m,promotion:b.dataset.p});});$("cancelPromo").onclick=()=>$("overlay").classList.add("hidden");}
+function commitMove(m){const legal=legalMoves(turn);if(!legal.some(x=>x.from===m.from&&x.to===m.to&&x.promotion===m.promotion&&x.castle===m.castle))return;const san=moveToSAN(m,legal);const mover=turn;applyMove(m);history.push({san,mover});lastMove={from:m.from,to:m.to};positionCounts[positionKey()]=(positionCounts[positionKey()]||0)+1;selected=null;legalForSelected=[];playSound();renderBoard();const st=gameState();if(st.over){finishGame(st);return;}updateStatus();$("toast").textContent=st.check?"کیش! شاه در خطر است.":mover===human?"حرکت ثبت شد.":"هوش مصنوعی حرکت کرد.";if(turn!==human){thinking=true;updateStatus();renderBoard();setTimeout(aiMove,160);}}
+function finishGame(st){gameOver=true;thinking=false;updateStatus();renderBoard();if(st.type==="mate"){if(st.winner===human){$("resultIcon").textContent="♔";$("resultTitle").textContent="پیروزی!";$("resultMessage").textContent="حرکت‌های هوشمندانه تو نتیجه داد.";}else{$("resultIcon").textContent="♚";$("resultTitle").textContent="بازی به پایان رسید";$("resultMessage").textContent="این بار حریف پیروز شد.";} }else{$("resultIcon").textContent="½";$("resultTitle").textContent="بازی مساوی شد";$("resultMessage").textContent=st.reason||"هیچ‌یک از دو طرف پیروز نشد.";}setTimeout(()=>showScreen("result"),350);}
+function playSound(){if(!settings.sound)return;try{audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.frequency.value=520;g.gain.setValueAtTime(.045,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.08);o.start();o.stop(audioCtx.currentTime+.08);}catch(e){}}
+function evaluate(){let score=0;for(let i=0;i<64;i++){let p=board[i];if(!p)continue;let [r,c]=rc(i),center=3.5-(Math.abs(3.5-r)+Math.abs(3.5-c))/2;let v=VALUES[p.t];let positional=0;if(p.t==="p")positional=(p.c==="w"?(6-r):(r-1))*7+center*3;if(p.t==="n")positional=center*11;if(p.t==="b")positional=center*5;if(p.t==="r")positional=(p.c==="w"?(7-r):r)*1.5;if(p.t==="q")positional=center*2;if(p.t==="k")positional=(halfmove<20?-center*5:center*4);score+=(p.c==="w"?1:-1)*(v+positional);}return score;}
+function orderMoves(moves){return moves.sort((a,b)=>moveScore(b)-moveScore(a));}function moveScore(m){let p=board[m.from],t=board[m.to];return (t?10*VALUES[t.t]-VALUES[p.t]:0)+(m.promotion?VALUES[m.promotion]:0)+(m.castle?40:0);}
+function search(depth,alpha,beta,rootSide,token){if(token!==searchToken)return {score:0,move:null};const moves=legalMoves(turn);if(!moves.length)return {score:inCheck(turn)?(turn===rootSide?-999999-depth:999999+depth):0,move:null};if(insufficient()||halfmove>=100)return {score:0,move:null};if(depth===0)return {score:evaluate()*(rootSide==="w"?1:-1),move:null};let best=null,maximizing=turn===rootSide,bestScore=maximizing?-Infinity:Infinity;for(const m of orderMoves(moves)){const state=cloneState();applyMove(m);let result=search(depth-1,alpha,beta,rootSide,token);restoreState(state);if(token!==searchToken)return {score:0,move:null};if(maximizing){if(result.score>bestScore){bestScore=result.score;best=m;}alpha=Math.max(alpha,bestScore);}else{if(result.score<bestScore){bestScore=result.score;best=m;}beta=Math.min(beta,bestScore);}if(beta<=alpha)break;}return {score:bestScore,move:best};}
+function aiMove(){if(gameOver||turn===human)return;const token=searchToken;thinking=true;updateStatus();renderBoard();setTimeout(()=>{if(token!==searchToken||gameOver)return;let moves=legalMoves(turn);if(!moves.length){const st=gameState();finishGame(st);return;}const cfg={easy:{depth:1,random:.35},medium:{depth:2,random:.12},hard:{depth:3,random:.035},pro:{depth:3,random:0}}[settings.difficulty]||{depth:2,random:.1};let move;if(Math.random()<cfg.random){move=moves[Math.floor(Math.random()*moves.length)];}else{let best=null;for(let d=1;d<=cfg.depth;d++){let res=search(d,-Infinity,Infinity,turn,token);if(res.move)best=res.move;if(token!==searchToken)return;}move=best||moves[0];}thinking=false;commitMove(move);},30);}
+function openDialog(html){$("dialog").innerHTML=html;$("overlay").classList.remove("hidden");}
+function closeDialog(){$("overlay").classList.add("hidden");}
+function openMenu(){if(gameOver)return;openDialog(`<h2>منوی بازی</h2><p>بازی را متوقف کنید یا به مسیرتان ادامه دهید.</p><div class="dialog-actions"><button class="primary" id="resumeBtn">ادامه بازی</button><button class="secondary" id="restartBtn">شروع مجدد</button><button class="quiet" id="homeBtn">بازگشت به منوی اصلی</button></div>`);$("resumeBtn").onclick=closeDialog;$("restartBtn").onclick=()=>openDialog(`<h2>شروع مجدد؟</h2><p>وضعیت فعلی مسابقه پاک می‌شود.</p><div class="dialog-actions"><button class="primary" id="confirmRestart">بله، شروع مجدد</button><button class="quiet" id="cancelRestart">انصراف</button></div>`);$("confirmRestart").onclick=()=>{closeDialog();freshGame()};$("cancelRestart").onclick=()=>openMenu();$("homeBtn").onclick=()=>{searchToken++;thinking=false;closeDialog();showScreen("home")};}
+$("startBtn").onclick=()=>{human=settings.color==="random"?(Math.random()<.5?"w":"b"):settings.color;freshGame();};
+$("settingsBtn").onclick=()=>{showScreen("settings");$("difficulty").value=settings.difficulty;$("colorChoice").value=settings.color;$("soundToggle").checked=settings.sound;};
+$("settingsBack").onclick=()=>showScreen("home");
+$("saveSettings").onclick=()=>{settings={difficulty:$("difficulty").value,color:$("colorChoice").value,sound:$("soundToggle").checked};showScreen("home");};
+$("menuBtn").onclick=openMenu;$("overlay").addEventListener("click",e=>{if(e.target===$("overlay"))closeDialog()});
+$("againBtn").onclick=()=>{human=settings.color==="random"?(Math.random()<.5?"w":"b"):settings.color;freshGame();};
+$("resultHomeBtn").onclick=()=>{searchToken++;showScreen("home")};
+$("flipBtn").onclick=()=>{flipped=!flipped;renderBoard()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("overlay").classList.contains("hidden"))closeDialog();if(e.key==="Escape"&&$("game").classList.contains("hidden")===false&&$("overlay").classList.contains("hidden"))openMenu();});
+/* Initialize visible board only when a game starts. */
+</script>
+</body>
+</html>
